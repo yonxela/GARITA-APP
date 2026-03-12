@@ -48,8 +48,13 @@ export default function LoginPage() {
         policia: '/garita',
       }
       router.push(routes[data.rol] || '/master')
-    } catch {
-      toast.error('Error de conexión. Intenta de nuevo.')
+    } catch (err: any) {
+      console.error(err)
+      const msg =
+        typeof err?.message === 'string'
+          ? `Error de conexión: ${err.message}`
+          : 'Error de conexión. Intenta de nuevo.'
+      toast.error(msg)
     } finally {
       setLoading(false)
     }
