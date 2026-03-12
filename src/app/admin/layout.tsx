@@ -1,0 +1,28 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/lib/store'
+import { Sidebar } from '@/components/sidebar'
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const usuario = useAuthStore((s) => s.usuario)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!usuario || !['administrador', 'coadministrador'].includes(usuario.rol)) {
+      router.push('/')
+    }
+  }, [usuario, router])
+
+  if (!usuario || !['administrador', 'coadministrador'].includes(usuario.rol)) return null
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Sidebar />
+      <main className="ml-72 p-8">
+        {children}
+      </main>
+    </div>
+  )
+}
