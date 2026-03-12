@@ -1,21 +1,18 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/store'
 import { Sidebar } from '@/components/sidebar'
 
 export default function MasterLayout({ children }: { children: React.ReactNode }) {
   const usuario = useAuthStore((s) => s.usuario)
-  const router = useRouter()
 
-  useEffect(() => {
-    if (!usuario || usuario.rol !== 'master') {
-      router.push('/')
-    }
-  }, [usuario, router])
-
-  if (!usuario || usuario.rol !== 'master') return null
+  if (!usuario || usuario.rol !== 'master') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-500 text-sm">Sin acceso. Inicia sesión como master.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
